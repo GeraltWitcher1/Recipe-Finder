@@ -1,4 +1,4 @@
-#Recipe Finder
+# Recipe Finder
 As an avid food enthusiast, I often go out of my way to try and find new recipes online to experiment with. 
 Unfortunately, more often than not that experience is soured by countless advertisements and the need for the author to share their life story before getting to the actual recipe. 
 
