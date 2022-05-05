@@ -5,4 +5,10 @@
     <string name="cuisines">Cuisines</string>
     <string name="random">Random</string>
     <string name="favorites">Favorites</string>
+    <string name="recipe_image">Recipe image</string>
+    <string name="share">SHARE</string>
+    <string name="search_by_recipe_name">Search by recipe name</string>
+    <string name="search">Search</string>
+    <string name="go">GO</string>
+    <string name="searchButton">searchButton</string>
 </resources>

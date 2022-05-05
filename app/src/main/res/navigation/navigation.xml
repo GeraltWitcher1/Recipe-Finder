@@ -9,36 +9,42 @@
     <fragment
         android:id="@+id/nav_recipe_list"
         android:name="com.example.recipe_finder.ui.recipe_list.RecipeListFragment"
-        android:label="recipe-list"
+        android:label="Searched recipes"
         tools:layout="@layout/fragment_recipe_list"
         />
 
     <fragment
         android:id="@+id/nav_categories"
-        android:name="com.example.recipe_finder.ui.recipe_list.RecipeListFragment"
-        android:label="recipe-list"
+        android:name="com.example.recipe_finder.ui.categories.CategoriesFragment"
+        android:label="Categories"
         tools:layout="@layout/fragment_categories"
         />
 
     <fragment
         android:id="@+id/nav_cuisines"
-        android:name="com.example.recipe_finder.ui.recipe_list.RecipeListFragment"
-        android:label="recipe-list"
+        android:name="com.example.recipe_finder.ui.cuisines.CuisinesFragment"
+        android:label="Cuisines"
         tools:layout="@layout/fragment_cuisines"
         />
 
     <fragment
         android:id="@+id/nav_random"
-        android:name="com.example.recipe_finder.ui.recipe_list.RecipeListFragment"
-        android:label="recipe-list"
+        android:name="com.example.recipe_finder.ui.recipe.RecipeFragment"
+        android:label="Random recipe!"
         tools:layout="@layout/fragment_recipe"
         />
 
     <fragment
         android:id="@+id/nav_favourites"
         android:name="com.example.recipe_finder.ui.recipe_list.RecipeListFragment"
-        android:label="recipe-list"
+        android:label="Favourite recipes"
         tools:layout="@layout/fragment_recipe_list"
+        />
+
+    <fragment
+        android:id="@+id/nav_search"
+        android:name="com.example.recipe_finder.ui.search.Search"
+        tools:layout="@layout/fragment_search"
         />
 
 </navigation>

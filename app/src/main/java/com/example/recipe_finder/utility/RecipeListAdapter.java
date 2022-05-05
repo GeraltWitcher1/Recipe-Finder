@@ -1,5 +1,6 @@
 package com.example.recipe_finder.utility;
 
+import android.annotation.SuppressLint;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,11 +19,14 @@ import java.util.ArrayList;
 public class RecipeListAdapter extends RecyclerView.Adapter<RecipeListAdapter.ViewHolder> {
 
     private ArrayList<RecipeListItem> recipes;
+    private final RecipeOnClickListener recipeListener;
 
-    public RecipeListAdapter(ArrayList<RecipeListItem> recipes) {
-        System.out.println("Entering recipeList");
+
+    public RecipeListAdapter(ArrayList<RecipeListItem> recipes, RecipeOnClickListener recipeListener) {
         this.recipes = recipes;
+        this.recipeListener = recipeListener;
     }
+
 
     @NonNull
     @Override
@@ -37,11 +41,10 @@ public class RecipeListAdapter extends RecyclerView.Adapter<RecipeListAdapter.Vi
 
         RecipeListItem item = recipes.get(position);
 
-        holder.name.setText(item.getName());
-        System.out.println(recipes.get(position).getThumbURL());
+        holder.name.setText(item.getStrMeal());
         Picasso.get().setLoggingEnabled(true);
         Picasso.get()
-                .load(item.getThumbURL())
+                .load(item.getStrMealThumb())
                 .fit()
                 .centerCrop()
                 .into(holder.thumbnail);
@@ -59,12 +62,23 @@ public class RecipeListAdapter extends RecyclerView.Adapter<RecipeListAdapter.Vi
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
+
+            itemView.setOnClickListener(view -> recipeListener.onClick(recipes.get(getAdapterPosition())));
+
             name = itemView.findViewById(R.id.recipe_name);
             thumbnail = itemView.findViewById(R.id.recipe_image);
+
+
         }
     }
 
-//    public interface OnClickListener {
-//        void onClick(RecipeListItem recipe);
-//    }
+    @SuppressLint("NotifyDataSetChanged")
+    public void setRecipes(ArrayList<RecipeListItem> recipes) {
+        this.recipes = recipes;
+        notifyDataSetChanged();
+    }
+
+    public interface RecipeOnClickListener {
+        void onClick(RecipeListItem recipe);
+    }
 }

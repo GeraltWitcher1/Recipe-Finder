@@ -1,26 +1,38 @@
 package com.example.recipe_finder.model;
 
+import androidx.annotation.NonNull;
+
 public class RecipeListItem {
 
-    private int recipeID;
-    private String name;
-    private String thumbURL;
+    private int idMeal;
+    private String strMeal;
+    private String strMealThumb;
 
-    public int getRecipeID() {
-        return recipeID;
+    public int getIdMeal() {
+        return idMeal;
     }
 
-    public RecipeListItem(int recipeID, String name, String thumbURL) {
-        this.recipeID = recipeID;
-        this.name = name;
-        this.thumbURL = thumbURL;
+    public RecipeListItem(int idMeal, String strMeal, String strMealThumb) {
+        this.idMeal = idMeal;
+        this.strMeal = strMeal;
+        this.strMealThumb = strMealThumb;
     }
 
-    public String getName() {
-        return name;
+    public String getStrMeal() {
+        return strMeal;
     }
 
-    public String getThumbURL() {
-        return thumbURL;
+    public String getStrMealThumb() {
+        return strMealThumb;
+    }
+
+    @NonNull
+    @Override
+    public String toString() {
+        return "RecipeListItem{" +
+                "idMeal=" + idMeal +
+                ", strMeal='" + strMeal + '\'' +
+                ", strMealThumb='" + strMealThumb + '\'' +
+                '}';
     }
 }

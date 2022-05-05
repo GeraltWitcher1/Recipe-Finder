@@ -4,10 +4,12 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -17,46 +19,47 @@ import com.example.recipe_finder.utility.RecipeListAdapter;
 
 import java.util.ArrayList;
 
-public class RecipeListFragment extends Fragment {
+public class RecipeListFragment extends Fragment implements RecipeListAdapter.RecipeOnClickListener {
 
     RecyclerView recipeList;
     RecipeListAdapter adapter;
 
-    @Nullable
+    RecipeListViewModel viewModel;
+
+    private ArrayList<RecipeListItem> recipes;
+
+
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
         View root = inflater.inflate(R.layout.fragment_recipe_list, container, false);
-
-        recipeList = root.findViewById(R.id.recipeRecyclerView);
-        recipeList.hasFixedSize();
-        recipeList.setLayoutManager(new LinearLayoutManager(getContext()));
-
-        ArrayList<RecipeListItem> recipes = new ArrayList<>();
-        adapter = new RecipeListAdapter(recipes);
-        recipeList.setAdapter(adapter);
-
-//        populateArray(recipes);
-
         return root;
     }
 
-    private void populateArray(ArrayList<RecipeListItem> testArray) {
-        testArray.add(new RecipeListItem(1, "Carbonara", "https:\\/\\/www.themealdb.com\\/images\\/media\\/meals\\/llcbn01574260722.jpg"));
-        testArray.add(new RecipeListItem(2, "Arrabiata", "https:\\/\\/www.themealdb.com\\/images\\/media\\/meals\\/ustsqw1468250014.jpg"));
-        testArray.add(new RecipeListItem(3, "Alfredo", "https:\\/\\/www.themealdb.com\\/images\\/media\\/meals\\/ustsqw1468250014.jpg"));
-        testArray.add(new RecipeListItem(4, "Amatriciana", null));
-        testArray.add(new RecipeListItem(4, "Amatriciana", null));
-        testArray.add(new RecipeListItem(4, "Amatriciana", null));
-        testArray.add(new RecipeListItem(4, "Amatriciana", null));
-        testArray.add(new RecipeListItem(4, "Amatriciana", null));
-        testArray.add(new RecipeListItem(4, "Amatriciana", null));
-        testArray.add(new RecipeListItem(4, "Amatriciana", null));
-        testArray.add(new RecipeListItem(4, "Amatriciana", null));
-        testArray.add(new RecipeListItem(4, "Amatriciana", null));
-        testArray.add(new RecipeListItem(4, "Amatriciana", null));
-        testArray.add(new RecipeListItem(4, "Amatriciana", null));
-        testArray.add(new RecipeListItem(4, "Amatriciana", null));
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        recipeList = view.findViewById(R.id.recipeRecyclerView);
+        recipeList.hasFixedSize();
+        recipeList.setLayoutManager(new LinearLayoutManager(getContext()));
 
+        recipes = new ArrayList<>();
+        adapter = new RecipeListAdapter(recipes, this);
+        recipeList.setAdapter(adapter);
+
+        viewModel = new ViewModelProvider(this).get(RecipeListViewModel.class);
+        viewModel.getRecipes().observe(getViewLifecycleOwner(), this::addRecipes);
+    }
+
+    private void addRecipes(ArrayList<RecipeListItem> recipeListItems) {
+        recipes.clear();
+        recipes.addAll(recipeListItems);
+        adapter.setRecipes(recipes);
+    }
+
+
+    @Override
+    public void onClick(RecipeListItem recipe) {
+        Toast.makeText(getContext(),recipe.getIdMeal()+ " "+recipe.getStrMeal(), Toast.LENGTH_LONG).show();
     }
 }

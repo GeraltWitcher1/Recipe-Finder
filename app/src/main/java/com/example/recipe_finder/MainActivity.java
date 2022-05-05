@@ -37,7 +37,6 @@ public class MainActivity extends AppCompatActivity {
         navigationDrawer = findViewById(R.id.navigation_drawer);
     }
 
-
     private void setupNavigation() {
         navController = Navigation.findNavController(this, R.id.nav_host_fragment);
 
@@ -62,8 +61,6 @@ public class MainActivity extends AppCompatActivity {
         else
             super.onBackPressed();
     }
-
-
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
