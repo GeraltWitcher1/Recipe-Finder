@@ -7,7 +7,6 @@ import com.example.recipe_finder.model.RecipeListItem;
 import java.util.ArrayList;
 
 public interface RecipeRepository {
-    LiveData<ArrayList<RecipeListItem>> getRecipes();
+    LiveData<ArrayList<RecipeListItem>> getRecipes(String recipeName);
 
-    void populateArray();
 }

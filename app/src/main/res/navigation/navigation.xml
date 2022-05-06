@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/navigation.xml"
-    app:startDestination="@+id/nav_recipe_list">
+    app:startDestination="@+id/nav_search">
 
 
     <fragment
@@ -11,7 +11,11 @@
         android:name="com.example.recipe_finder.ui.recipe_list.RecipeListFragment"
         android:label="Searched recipes"
         tools:layout="@layout/fragment_recipe_list"
-        />
+        >
+        <action
+            android:id="@+id/action_nav_recipe_list_to_nav_search"
+            app:destination="@id/nav_search" />
+    </fragment>
 
     <fragment
         android:id="@+id/nav_categories"
@@ -43,8 +47,12 @@
 
     <fragment
         android:id="@+id/nav_search"
-        android:name="com.example.recipe_finder.ui.search.Search"
+        android:name="com.example.recipe_finder.ui.search.SearchFragment"
         tools:layout="@layout/fragment_search"
-        />
+        >
+        <action
+            android:id="@+id/action_nav_search_to_nav_recipe_list"
+            app:destination="@id/nav_recipe_list" />
+    </fragment>
 
 </navigation>

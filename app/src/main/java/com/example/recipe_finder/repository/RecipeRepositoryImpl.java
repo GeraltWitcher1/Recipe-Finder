@@ -36,14 +36,15 @@ public class RecipeRepositoryImpl implements RecipeRepository {
 
     }
 
-    public LiveData<ArrayList<RecipeListItem>> getRecipes() {
+    public LiveData<ArrayList<RecipeListItem>> getRecipes(String recipeName) {
+        populateArrayFromAPI(recipeName);
         return this.recipes;
     }
 
 
-    public void populateArray() {
+    private void populateArrayFromAPI(String recipeName) {
         FoodAPI foodAPI = ServiceGenerator.getFoodAPI();
-        Call<RecipeListResponse> call = foodAPI.getRecipeListItems("Cheese");
+        Call<RecipeListResponse> call = foodAPI.getRecipeListItems(recipeName);
 
         call.enqueue(new Callback<RecipeListResponse>() {
             @EverythingIsNonNull
@@ -62,26 +63,26 @@ public class RecipeRepositoryImpl implements RecipeRepository {
         });
     }
 
-    public void populateArray1() {
-        ArrayList<RecipeListItem> testArray = new ArrayList<>();
-        testArray.add(new RecipeListItem(1, "Carbonara", "https:\\/\\/www.themealdb.com\\/images\\/media\\/meals\\/llcbn01574260722.jpg"));
-        testArray.add(new RecipeListItem(2, "Arrabiata", "https:\\/\\/www.themealdb.com\\/images\\/media\\/meals\\/ustsqw1468250014.jpg"));
-        testArray.add(new RecipeListItem(3, "Alfredo", "https:\\/\\/www.themealdb.com\\/images\\/media\\/meals\\/ustsqw1468250014.jpg"));
-        testArray.add(new RecipeListItem(4, "Amatriciana", null));
-        testArray.add(new RecipeListItem(4, "Amatriciana", null));
-        testArray.add(new RecipeListItem(4, "Amatriciana", null));
-        testArray.add(new RecipeListItem(4, "Amatriciana", null));
-        testArray.add(new RecipeListItem(4, "Amatriciana", null));
-        testArray.add(new RecipeListItem(4, "Amatriciana", null));
-        testArray.add(new RecipeListItem(4, "Amatriciana", null));
-        testArray.add(new RecipeListItem(4, "Amatriciana", null));
-        testArray.add(new RecipeListItem(4, "Amatriciana", null));
-        testArray.add(new RecipeListItem(4, "Amatriciana", null));
-        testArray.add(new RecipeListItem(4, "Amatriciana", null));
-        testArray.add(new RecipeListItem(4, "Amatriciana", null));
-        recipes.postValue(testArray);
-
-    }
+//    public void populateArrayFromMemory() {
+//        ArrayList<RecipeListItem> testArray = new ArrayList<>();
+//        testArray.add(new RecipeListItem(1, "Carbonara", "https:\\/\\/www.themealdb.com\\/images\\/media\\/meals\\/llcbn01574260722.jpg"));
+//        testArray.add(new RecipeListItem(2, "Arrabiata", "https:\\/\\/www.themealdb.com\\/images\\/media\\/meals\\/ustsqw1468250014.jpg"));
+//        testArray.add(new RecipeListItem(3, "Alfredo", "https:\\/\\/www.themealdb.com\\/images\\/media\\/meals\\/ustsqw1468250014.jpg"));
+//        testArray.add(new RecipeListItem(4, "Amatriciana", null));
+//        testArray.add(new RecipeListItem(4, "Amatriciana", null));
+//        testArray.add(new RecipeListItem(4, "Amatriciana", null));
+//        testArray.add(new RecipeListItem(4, "Amatriciana", null));
+//        testArray.add(new RecipeListItem(4, "Amatriciana", null));
+//        testArray.add(new RecipeListItem(4, "Amatriciana", null));
+//        testArray.add(new RecipeListItem(4, "Amatriciana", null));
+//        testArray.add(new RecipeListItem(4, "Amatriciana", null));
+//        testArray.add(new RecipeListItem(4, "Amatriciana", null));
+//        testArray.add(new RecipeListItem(4, "Amatriciana", null));
+//        testArray.add(new RecipeListItem(4, "Amatriciana", null));
+//        testArray.add(new RecipeListItem(4, "Amatriciana", null));
+//        recipes.postValue(testArray);
+//
+//    }
 
 
 }

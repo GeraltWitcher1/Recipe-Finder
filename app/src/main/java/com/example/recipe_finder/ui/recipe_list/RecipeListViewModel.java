@@ -15,17 +15,25 @@ public class RecipeListViewModel extends ViewModel {
 
     RecipeRepository recipeRepository;
 
+    String recipeListSearchString;
+
+
+    RecipeListItem currentRecipe;
+
     public RecipeListViewModel() {
         this.recipeRepository = RecipeRepositoryImpl.getInstance();
-        recipeRepository.populateArray();
     }
 
     public LiveData<ArrayList<RecipeListItem>> getRecipes() {
-        return recipeRepository.getRecipes();
+        return recipeRepository.getRecipes(recipeListSearchString);
     }
 
-    public void searchRecipe(String s){
-        System.out.println("Placeholder for searching recipes");
+    public void setSearchString(String searchString){
+        recipeListSearchString = searchString;
+        recipeRepository.getRecipes(recipeListSearchString);
     }
 
+    public void setCurrentRecipe(RecipeListItem currentRecipe) {
+        this.currentRecipe = currentRecipe;
+    }
 }

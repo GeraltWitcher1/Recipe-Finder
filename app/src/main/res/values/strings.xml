@@ -11,4 +11,5 @@
     <string name="search">Search</string>
     <string name="go">GO</string>
     <string name="searchButton">searchButton</string>
+    <string name="search_nav_button">Search</string>
 </resources>

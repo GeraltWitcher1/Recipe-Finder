@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#FFFFFF"
-    tools:context=".ui.search.Search">
+    tools:context=".ui.search.SearchFragment">
 
     <TextView
         android:id="@+id/search_label"
@@ -36,7 +36,7 @@
 
 
     <ImageView
-        android:id="@+id/search_button"
+        android:id="@+id/recipe_search_button"
         android:layout_width="100dp"
         android:layout_height="100dp"
         android:layout_marginTop="100dp"
