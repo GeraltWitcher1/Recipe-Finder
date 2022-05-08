@@ -17,16 +17,8 @@
         android:orientation="horizontal"
         tools:ignore="UseCompoundDrawables">
 
-
-        <ImageView
-            android:id="@+id/recipe_image"
-            android:layout_width="75dp"
-            android:layout_margin="4dp"
-            android:layout_height="match_parent"
-            android:gravity="center"
-            android:contentDescription="@string/recipe_image"/>
         <TextView
-            android:id="@+id/recipe_name"
+            android:id="@+id/item_name"
             android:textSize="16sp"
             android:layout_width="0dp"
             android:layout_height="match_parent"

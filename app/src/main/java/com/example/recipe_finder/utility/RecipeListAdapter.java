@@ -21,12 +21,10 @@ public class RecipeListAdapter extends RecyclerView.Adapter<RecipeListAdapter.Vi
     private ArrayList<RecipeListItem> recipes;
     private final RecipeOnClickListener recipeListener;
 
-
     public RecipeListAdapter(ArrayList<RecipeListItem> recipes, RecipeOnClickListener recipeListener) {
         this.recipes = recipes;
         this.recipeListener = recipeListener;
     }
-
 
     @NonNull
     @Override
@@ -67,7 +65,6 @@ public class RecipeListAdapter extends RecyclerView.Adapter<RecipeListAdapter.Vi
 
             name = itemView.findViewById(R.id.recipe_name);
             thumbnail = itemView.findViewById(R.id.recipe_image);
-
 
         }
     }

@@ -43,7 +43,7 @@ public class SearchFragment extends Fragment {
     }
 
     private void searchButtonPressed(View view) {
-        viewModel.setSearchString(searchField.getText().toString());
+        viewModel.updateRecipesFromSearch(searchField.getText().toString());
         NavHostFragment.findNavController(this).navigate(R.id.action_nav_search_to_nav_recipe_list);
     }
 

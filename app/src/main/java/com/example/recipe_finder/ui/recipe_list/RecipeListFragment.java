@@ -10,6 +10,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.navigation.fragment.NavHostFragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -18,6 +19,8 @@ import com.example.recipe_finder.model.RecipeListItem;
 import com.example.recipe_finder.utility.RecipeListAdapter;
 
 import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.stream.Collectors;
 
 public class RecipeListFragment extends Fragment implements RecipeListAdapter.RecipeOnClickListener {
 
@@ -49,6 +52,7 @@ public class RecipeListFragment extends Fragment implements RecipeListAdapter.Re
 
         viewModel = new ViewModelProvider(this).get(RecipeListViewModel.class);
         viewModel.getRecipes().observe(getViewLifecycleOwner(), this::addRecipes);
+
     }
 
     private void addRecipes(ArrayList<RecipeListItem> recipeListItems) {
