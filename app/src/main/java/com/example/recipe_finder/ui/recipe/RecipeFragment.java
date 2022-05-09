@@ -67,6 +67,9 @@ public class RecipeFragment extends Fragment {
         recipeViewModel = new ViewModelProvider(this).get(RecipeViewModel.class);
         recipeViewModel.getRecipe().observe(getViewLifecycleOwner(), this::addRecipe);
 
+        if (getArguments() != null && getArguments().get("RecipeId") != null){
+            recipeViewModel.updateRecipeById(getArguments().get("RecipeId")+"");
+        } else recipeViewModel.updateRecipeRandom();
     }
 
     private void addRecipe(Recipe recipe) {

@@ -17,4 +17,5 @@
     <string name="cooking_instructions">Cooking instructions:</string>
     <string name="ingredients_and_measures">Ingredients and measures:</string>
     <string name="placeholder">Placeholder</string>
+    <string name="no_recipes_found_try_again">No recipes found :( Try again!</string>
 </resources>

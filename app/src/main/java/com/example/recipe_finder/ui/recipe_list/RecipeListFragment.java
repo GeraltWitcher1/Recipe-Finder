@@ -1,10 +1,11 @@
 package com.example.recipe_finder.ui.recipe_list;
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -19,6 +20,8 @@ import com.example.recipe_finder.model.RecipeListItem;
 import com.example.recipe_finder.ui.recipe.RecipeViewModel;
 import com.example.recipe_finder.utility.RecipeListAdapter;
 
+import org.w3c.dom.Text;
+
 import java.util.ArrayList;
 
 public class RecipeListFragment extends Fragment implements RecipeListAdapter.RecipeOnClickListener {
@@ -28,6 +31,8 @@ public class RecipeListFragment extends Fragment implements RecipeListAdapter.Re
 
     RecipeListViewModel recipeListViewModel;
     RecipeViewModel recipeViewModel;
+
+    TextView noRecipesFoundLabel;
 
     private ArrayList<RecipeListItem> recipes;
 
@@ -42,14 +47,16 @@ public class RecipeListFragment extends Fragment implements RecipeListAdapter.Re
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        recipeList = view.findViewById(R.id.recipeRecyclerView);
+        recipeList = view.findViewById(R.id.recipe_recycler_view);
         recipeList.hasFixedSize();
         recipeList.setLayoutManager(new LinearLayoutManager(getContext()));
 
         recipes = new ArrayList<>();
         adapter = new RecipeListAdapter(recipes, this);
         recipeList.setAdapter(adapter);
+        noRecipesFoundLabel = view.findViewById(R.id.no_recipes_found);
 
+        recipes.clear();
         recipeListViewModel = new ViewModelProvider(this).get(RecipeListViewModel.class);
         recipeListViewModel.getRecipes().observe(getViewLifecycleOwner(), this::addRecipes);
 
@@ -57,17 +64,26 @@ public class RecipeListFragment extends Fragment implements RecipeListAdapter.Re
 
     }
 
+    @SuppressLint("SetTextI18n")
     private void addRecipes(ArrayList<RecipeListItem> recipeListItems) {
         recipes.clear();
-        recipes.addAll(recipeListItems);
-        adapter.setRecipes(recipes);
+        if (recipeListItems != null) {
+            noRecipesFoundLabel.setVisibility(View.GONE);
+            recipes.addAll(recipeListItems);
+            adapter.setRecipes(recipes);
+        } else {
+            System.out.println("Empty!");
+            noRecipesFoundLabel.setVisibility(View.VISIBLE);
+
+        }
+
     }
 
 
     @Override
     public void onClick(RecipeListItem recipe) {
-        recipeViewModel.updateRecipeById(recipe.getIdMeal() + "");
-        NavHostFragment.findNavController(this).navigate(R.id.action_nav_recipe_list_to_nav_recipe);
-
+        Bundle bundle = new Bundle();
+        bundle.putInt("RecipeId", recipe.getIdMeal());
+        NavHostFragment.findNavController(this).navigate(R.id.action_nav_recipe_list_to_nav_recipe, bundle);
     }
 }
