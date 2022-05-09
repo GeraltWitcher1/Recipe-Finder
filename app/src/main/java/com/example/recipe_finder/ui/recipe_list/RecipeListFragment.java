@@ -16,18 +16,18 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.recipe_finder.R;
 import com.example.recipe_finder.model.RecipeListItem;
+import com.example.recipe_finder.ui.recipe.RecipeViewModel;
 import com.example.recipe_finder.utility.RecipeListAdapter;
 
 import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.stream.Collectors;
 
 public class RecipeListFragment extends Fragment implements RecipeListAdapter.RecipeOnClickListener {
 
     RecyclerView recipeList;
     RecipeListAdapter adapter;
 
-    RecipeListViewModel viewModel;
+    RecipeListViewModel recipeListViewModel;
+    RecipeViewModel recipeViewModel;
 
     private ArrayList<RecipeListItem> recipes;
 
@@ -50,8 +50,10 @@ public class RecipeListFragment extends Fragment implements RecipeListAdapter.Re
         adapter = new RecipeListAdapter(recipes, this);
         recipeList.setAdapter(adapter);
 
-        viewModel = new ViewModelProvider(this).get(RecipeListViewModel.class);
-        viewModel.getRecipes().observe(getViewLifecycleOwner(), this::addRecipes);
+        recipeListViewModel = new ViewModelProvider(this).get(RecipeListViewModel.class);
+        recipeListViewModel.getRecipes().observe(getViewLifecycleOwner(), this::addRecipes);
+
+        recipeViewModel = new ViewModelProvider(this).get(RecipeViewModel.class);
 
     }
 
@@ -64,6 +66,8 @@ public class RecipeListFragment extends Fragment implements RecipeListAdapter.Re
 
     @Override
     public void onClick(RecipeListItem recipe) {
-        Toast.makeText(getContext(),recipe.getIdMeal()+ " "+recipe.getStrMeal(), Toast.LENGTH_LONG).show();
+        recipeViewModel.updateRecipeById(recipe.getIdMeal() + "");
+        NavHostFragment.findNavController(this).navigate(R.id.action_nav_recipe_list_to_nav_recipe);
+
     }
 }

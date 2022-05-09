@@ -5,10 +5,13 @@ import android.util.Log;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
+import com.example.recipe_finder.model.Recipe;
 import com.example.recipe_finder.model.RecipeListItem;
 import com.example.recipe_finder.networking.api.FoodAPI;
 import com.example.recipe_finder.networking.api.ServiceGenerator;
 import com.example.recipe_finder.networking.responses.RecipeListResponse;
+import com.example.recipe_finder.utility.RecipeApiToModelMapper;
+import com.google.gson.JsonObject;
 
 import java.util.ArrayList;
 import java.util.Objects;
@@ -22,34 +25,96 @@ public class RecipeRepositoryImpl implements RecipeRepository {
 
     private static RecipeRepository instance;
 
-    private MutableLiveData<ArrayList<RecipeListItem>> recipes;
+    private final MutableLiveData<ArrayList<RecipeListItem>> recipes;
+
+    private final MutableLiveData<Recipe> recipe;
 
 
     private RecipeRepositoryImpl() {
         recipes = new MutableLiveData<>();
+        recipe = new MutableLiveData<>();
     }
 
     public static synchronized RecipeRepository getInstance() {
         if (instance == null)
             instance = new RecipeRepositoryImpl();
         return instance;
-
     }
 
     public LiveData<ArrayList<RecipeListItem>> getRecipes() {
         return this.recipes;
     }
 
-    public void updateBySearch(String recipeName) {
+    public LiveData<Recipe> getRecipe(){
+        return this.recipe;
+    }
+
+    public void updateRecipeById(String id){
+        findRecipeById(id);
+    }
+
+    @Override
+    public void updateRecipeRandom() {
+        findRandomRecipe();
+    }
+
+
+    @Override
+    public void updateListBySearch(String recipeName) {
         findRecipesBySearch(recipeName);
     }
 
-    public void updateByCategory(String categoryName) {
+    @Override
+    public void updateListByCategory(String categoryName) {
         findRecipesByCategory(categoryName);
     }
 
     @Override
-    public void updateByCuisine(String cuisineName) {
+    public void updateListByCuisine(String cuisineName) {
+
+    }
+
+
+    private void findRandomRecipe(){
+        FoodAPI foodAPI = ServiceGenerator.getFoodAPI();
+        Call<JsonObject> call = foodAPI.getRandomRecipe();
+
+        call.enqueue(new Callback<JsonObject>() {
+            @EverythingIsNonNull
+            @Override
+            public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
+                if (response.isSuccessful()) {
+                    recipe.setValue(RecipeApiToModelMapper.map(Objects.requireNonNull(response.body())));
+                }
+            }
+
+            @EverythingIsNonNull
+            @Override
+            public void onFailure(Call<JsonObject> call, Throwable t) {
+                Log.i("Retrofit", "Something went wrong :(" + t);
+            }
+        });
+    }
+
+    private void findRecipeById(String id){
+        FoodAPI foodAPI = ServiceGenerator.getFoodAPI();
+        Call<JsonObject> call = foodAPI.getRecipeById(id);
+
+        call.enqueue(new Callback<JsonObject>() {
+            @EverythingIsNonNull
+            @Override
+            public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
+                if (response.isSuccessful()) {
+                    recipe.setValue(RecipeApiToModelMapper.map(Objects.requireNonNull(response.body())));
+                }
+            }
+
+            @EverythingIsNonNull
+            @Override
+            public void onFailure(Call<JsonObject> call, Throwable t) {
+                Log.i("Retrofit", "Something went wrong :(" + t);
+            }
+        });
 
     }
 
@@ -94,8 +159,5 @@ public class RecipeRepositoryImpl implements RecipeRepository {
             }
         });
     }
-
-
-
 
 }

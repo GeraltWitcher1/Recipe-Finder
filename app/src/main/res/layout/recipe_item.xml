@@ -25,6 +25,8 @@
             android:layout_height="match_parent"
             android:gravity="center"
             android:contentDescription="@string/recipe_image"/>
+
+
         <TextView
             android:id="@+id/recipe_name"
             android:textSize="16sp"

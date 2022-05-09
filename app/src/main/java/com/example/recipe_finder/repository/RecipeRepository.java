@@ -2,16 +2,24 @@ package com.example.recipe_finder.repository;
 
 import androidx.lifecycle.LiveData;
 
+import com.example.recipe_finder.model.Recipe;
 import com.example.recipe_finder.model.RecipeListItem;
 
 import java.util.ArrayList;
 
 public interface RecipeRepository {
+
     LiveData<ArrayList<RecipeListItem>> getRecipes();
 
-    void updateBySearch(String recipeName);
+    LiveData<Recipe> getRecipe();
 
-    void updateByCategory(String categoryName);
+    void updateListBySearch(String recipeName);
 
-    void updateByCuisine(String cuisineName);
+    void updateListByCategory(String categoryName);
+
+    void updateListByCuisine(String cuisineName);
+
+    void updateRecipeById(String id);
+
+    void updateRecipeRandom();
 }

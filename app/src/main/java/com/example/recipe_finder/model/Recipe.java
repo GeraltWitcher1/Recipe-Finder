@@ -27,4 +27,40 @@ public class Recipe {
         this.ingredients = ingredients;
         this.measures = measures;
     }
+
+    public int getId() {
+        return id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public String getCategory() {
+        return category;
+    }
+
+    public String getArea() {
+        return area;
+    }
+
+    public String getCookingInstructions() {
+        return cookingInstructions;
+    }
+
+    public String getImage() {
+        return image;
+    }
+
+    public String getRecipeLink() {
+        return recipeLink;
+    }
+
+    public ArrayList<String> getIngredients() {
+        return ingredients;
+    }
+
+    public ArrayList<String> getMeasures() {
+        return measures;
+    }
 }

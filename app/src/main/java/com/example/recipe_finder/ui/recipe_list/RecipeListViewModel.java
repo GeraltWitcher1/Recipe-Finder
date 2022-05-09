@@ -1,7 +1,6 @@
 package com.example.recipe_finder.ui.recipe_list;
 
 import androidx.lifecycle.LiveData;
-import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
 import com.example.recipe_finder.model.RecipeListItem;
@@ -14,8 +13,6 @@ public class RecipeListViewModel extends ViewModel {
 
     RecipeRepository recipeRepository;
 
-    RecipeListItem currentRecipe;
-
     public RecipeListViewModel() {
         this.recipeRepository = RecipeRepositoryImpl.getInstance();
     }
@@ -25,18 +22,15 @@ public class RecipeListViewModel extends ViewModel {
     }
 
     public void updateRecipesFromSearch(String searchString){
-        recipeRepository.updateBySearch(searchString);
+        recipeRepository.updateListBySearch(searchString);
     }
 
     public void updateRecipesByCategory(String categoryName){
-        recipeRepository.updateByCategory(categoryName);
+        recipeRepository.updateListByCategory(categoryName);
     }
 
     public void updateRecipesByCuisine(String cuisineName){
 
     }
 
-    public void setCurrentRecipe(RecipeListItem currentRecipe) {
-        this.currentRecipe = currentRecipe;
-    }
 }

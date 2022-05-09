@@ -12,4 +12,9 @@
     <string name="go">GO</string>
     <string name="searchButton">searchButton</string>
     <string name="search_nav_button">Search</string>
+    <string name="favourite">favourite</string>
+    <string name="video">video</string>
+    <string name="cooking_instructions">Cooking instructions:</string>
+    <string name="ingredients_and_measures">Ingredients and measures:</string>
+    <string name="placeholder">Placeholder</string>
 </resources>
