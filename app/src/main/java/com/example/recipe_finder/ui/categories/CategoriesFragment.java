@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -27,6 +28,7 @@ public class CategoriesFragment extends Fragment implements CategoriesAdapter.Ca
 
     CategoriesViewModel categoriesViewModel;
     RecipeListViewModel recipeListViewModel;
+    TextView noRecipesFoundLabel;
 
     private ArrayList<Category> categories;
 
@@ -44,6 +46,9 @@ public class CategoriesFragment extends Fragment implements CategoriesAdapter.Ca
         categoryList = view.findViewById(R.id.recipe_recycler_view);
         categoryList.hasFixedSize();
         categoryList.setLayoutManager(new LinearLayoutManager(getContext()));
+
+        noRecipesFoundLabel = view.findViewById(R.id.no_recipes_found);
+        noRecipesFoundLabel.setVisibility(View.GONE);
 
         categories = new ArrayList<>();
         adapter = new CategoriesAdapter(categories, this);

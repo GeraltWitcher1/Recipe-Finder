@@ -17,7 +17,6 @@ import androidx.lifecycle.ViewModelProvider;
 
 import com.example.recipe_finder.R;
 import com.example.recipe_finder.model.Recipe;
-import com.example.recipe_finder.ui.recipe_list.RecipeListViewModel;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -67,8 +66,8 @@ public class RecipeFragment extends Fragment {
         recipeViewModel = new ViewModelProvider(this).get(RecipeViewModel.class);
         recipeViewModel.getRecipe().observe(getViewLifecycleOwner(), this::addRecipe);
 
-        if (getArguments() != null && getArguments().get("RecipeId") != null){
-            recipeViewModel.updateRecipeById(getArguments().get("RecipeId")+"");
+        if (getArguments() != null && getArguments().get("RecipeId") != null) {
+            recipeViewModel.updateRecipeById(getArguments().get("RecipeId") + "");
         } else recipeViewModel.updateRecipeRandom();
     }
 
@@ -82,27 +81,28 @@ public class RecipeFragment extends Fragment {
                 .centerCrop()
                 .into(recipeImage);
 
-
         ArrayList<String> ingredients = recipe.getIngredients();
         ArrayList<String> measures = recipe.getMeasures();
 
-        for(int i = 0; i<recipe.getIngredients().size(); i++){
+        ingredientsMeasures.removeAllViews();
+
+        for (int i = 0; i < ingredients.size(); i++) {
             TableRow tableRow = new TableRow(getContext());
             TableRow.LayoutParams lp = new TableRow.LayoutParams(TableRow.LayoutParams.WRAP_CONTENT);
             tableRow.setLayoutParams(lp);
 
             TextView ingredient = new TextView(getContext());
             ingredient.setText(ingredients.get(i));
-            TextView measure = new TextView(getContext());
-            measure.setText(measures.get(i));
-
             tableRow.addView(ingredient);
-            tableRow.addView(measure);
+            TextView measure = new TextView(getContext());
 
-            ingredientsMeasures.addView(tableRow,i);
+            if (i < measures.size()) {
+                measure.setText(measures.get(i));
+                tableRow.addView(measure);
+            }
 
+            ingredientsMeasures.addView(tableRow, i);
         }
-
 
         recipeCookingInstructions.setText(recipe.getCookingInstructions());
 
