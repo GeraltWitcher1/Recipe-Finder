@@ -30,7 +30,7 @@ public class RecipeListViewModel extends ViewModel {
     }
 
     public void updateRecipesByCuisine(String cuisineName){
-
+        recipeRepository.updateListByCuisine(cuisineName);
     }
 
 }

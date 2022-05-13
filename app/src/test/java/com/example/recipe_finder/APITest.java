@@ -3,6 +3,7 @@ package com.example.recipe_finder;
 import com.example.recipe_finder.model.Recipe;
 import com.example.recipe_finder.networking.api.ServiceGenerator;
 import com.example.recipe_finder.networking.responses.CategoryListResponse;
+import com.example.recipe_finder.networking.responses.CuisineListResponse;
 import com.example.recipe_finder.networking.responses.RecipeListResponse;
 import com.example.recipe_finder.utility.RecipeApiToModelMapper;
 import com.google.gson.Gson;
@@ -40,6 +41,18 @@ public class APITest {
         Call<CategoryListResponse> call = ServiceGenerator.getFoodAPI().getCategories();
         System.out.println(call.toString());
         retrofit2.Response<CategoryListResponse> response = call.execute();
+
+        assertNotNull(response.body());
+        System.out.println(response.body());
+
+        assertEquals(200, response.code());
+    }
+
+    @Test
+    public void testCuisines() throws IOException {
+        Call<CuisineListResponse> call = ServiceGenerator.getFoodAPI().getCuisines();
+        System.out.println(call.toString());
+        retrofit2.Response<CuisineListResponse> response = call.execute();
 
         assertNotNull(response.body());
         System.out.println(response.body());

@@ -71,7 +71,7 @@ public class RecipeRepositoryImpl implements RecipeRepository {
 
     @Override
     public void updateListByCuisine(String cuisineName) {
-
+        findRecipeByCuisine(cuisineName);
     }
 
 
@@ -142,6 +142,27 @@ public class RecipeRepositoryImpl implements RecipeRepository {
     private void findRecipesByCategory(String categoryName) {
         FoodAPI foodAPI = ServiceGenerator.getFoodAPI();
         Call<RecipeListResponse> call = foodAPI.getRecipesByCategory(categoryName);
+
+        call.enqueue(new Callback<RecipeListResponse>() {
+            @EverythingIsNonNull
+            @Override
+            public void onResponse(Call<RecipeListResponse> call, Response<RecipeListResponse> response) {
+                if (response.isSuccessful()) {
+                    recipes.setValue(Objects.requireNonNull(response.body()).meals);
+                }
+            }
+
+            @EverythingIsNonNull
+            @Override
+            public void onFailure(Call<RecipeListResponse> call, Throwable t) {
+                Log.i("Retrofit", "Something went wrong :(" + t);
+            }
+        });
+    }
+
+    private void findRecipeByCuisine(String cuisineName) {
+        FoodAPI foodAPI = ServiceGenerator.getFoodAPI();
+        Call<RecipeListResponse> call = foodAPI.getRecipesByCuisine(cuisineName);
 
         call.enqueue(new Callback<RecipeListResponse>() {
             @EverythingIsNonNull

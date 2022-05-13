@@ -1,6 +1,7 @@
 package com.example.recipe_finder.networking.api;
 
 import com.example.recipe_finder.networking.responses.CategoryListResponse;
+import com.example.recipe_finder.networking.responses.CuisineListResponse;
 import com.example.recipe_finder.networking.responses.RecipeListResponse;
 import com.google.gson.JsonObject;
 
@@ -18,8 +19,14 @@ public interface FoodAPI {
     @GET("list.php?c=list")
     Call<CategoryListResponse> getCategories();
 
+    @GET("list.php?a=list")
+    Call<CuisineListResponse> getCuisines();
+
     @GET("filter.php")
     Call<RecipeListResponse> getRecipesByCategory(@Query("c") String categoryName);
+
+    @GET("filter.php")
+    Call<RecipeListResponse> getRecipesByCuisine(@Query("a") String cuisineName);
 
     @GET("random.php")
     Call<JsonObject> getRandomRecipe();

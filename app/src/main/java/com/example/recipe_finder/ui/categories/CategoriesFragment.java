@@ -4,7 +4,6 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -28,7 +27,6 @@ public class CategoriesFragment extends Fragment implements CategoriesAdapter.Ca
 
     CategoriesViewModel categoriesViewModel;
     RecipeListViewModel recipeListViewModel;
-    TextView noRecipesFoundLabel;
 
     private ArrayList<Category> categories;
 
@@ -36,7 +34,7 @@ public class CategoriesFragment extends Fragment implements CategoriesAdapter.Ca
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
-        View root = inflater.inflate(R.layout.fragment_recipe_list, container, false);
+        View root = inflater.inflate(R.layout.fragment_categories, container, false);
         return root;
     }
 
@@ -47,24 +45,21 @@ public class CategoriesFragment extends Fragment implements CategoriesAdapter.Ca
         categoryList.hasFixedSize();
         categoryList.setLayoutManager(new LinearLayoutManager(getContext()));
 
-        noRecipesFoundLabel = view.findViewById(R.id.no_recipes_found);
-        noRecipesFoundLabel.setVisibility(View.GONE);
-
         categories = new ArrayList<>();
         adapter = new CategoriesAdapter(categories, this);
         categoryList.setAdapter(adapter);
 
         categoriesViewModel = new ViewModelProvider(this).get(CategoriesViewModel.class);
-        categoriesViewModel.getCategories().observe(getViewLifecycleOwner(), this::addRecipes);
+        categoriesViewModel.getCategories().observe(getViewLifecycleOwner(), this::addCategories);
 
         recipeListViewModel = new ViewModelProvider(this).get(RecipeListViewModel.class);
 
     }
 
-    private void addRecipes(ArrayList<Category> recipeListItems) {
-        categories.clear();
-        categories.addAll(recipeListItems);
-        adapter.setCategories(categories);
+    private void addCategories(ArrayList<Category> categories) {
+        this.categories.clear();
+        this.categories.addAll(categories);
+        adapter.setCategories(this.categories);
     }
 
     @Override
