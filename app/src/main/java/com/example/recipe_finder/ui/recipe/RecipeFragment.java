@@ -1,5 +1,7 @@
 package com.example.recipe_finder.ui.recipe;
 
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,6 +11,7 @@ import android.widget.ImageView;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -58,10 +61,13 @@ public class RecipeFragment extends Fragment {
         recipeCookingInstructions = view.findViewById(R.id.recipe_cooking_instructions);
 
         shareButton = view.findViewById(R.id.share_button);
+        shareButton.setOnClickListener(this::shareButtonPressed);
 
         favouriteButton = view.findViewById(R.id.favourite_button);
+        favouriteButton.setOnClickListener(this::favouriteButtonPressed);
 
         videoButton = view.findViewById(R.id.video_button);
+        videoButton.setOnClickListener(this::videoButtonPressed);
 
         recipeViewModel = new ViewModelProvider(this).get(RecipeViewModel.class);
         recipeViewModel.getRecipe().observe(getViewLifecycleOwner(), this::addRecipe);
@@ -70,6 +76,28 @@ public class RecipeFragment extends Fragment {
             recipeViewModel.updateRecipeById(getArguments().get("RecipeId") + "");
         } else recipeViewModel.updateRecipeRandom();
     }
+
+    private void shareButtonPressed(View view) {
+        Toast.makeText(getContext(), "share button pressed", Toast.LENGTH_SHORT).show();
+        Intent shareIntent = new Intent(android.content.Intent.ACTION_SEND);
+        shareIntent.setType("text/html");
+        shareIntent.putExtra(android.content.Intent.EXTRA_SUBJECT, "Check out this awesome recipe!");
+        shareIntent.putExtra(android.content.Intent.EXTRA_TEXT, recipeViewModel.getRecipeName());
+        startActivity(Intent.createChooser(shareIntent, "Share Recipe"));
+
+    }
+
+    private void favouriteButtonPressed(View view) {
+        Toast.makeText(getContext(), "favourite button pressed", Toast.LENGTH_SHORT).show();
+    }
+
+    private void videoButtonPressed(View view) {
+        String action = Intent.ACTION_VIEW;
+        Uri uri = Uri.parse(recipeViewModel.getVideoURL());
+        Intent intent = new Intent(action,uri);
+        startActivity(intent);
+    }
+
 
     private void addRecipe(Recipe recipe) {
 
@@ -106,6 +134,8 @@ public class RecipeFragment extends Fragment {
 
         recipeCookingInstructions.setText(recipe.getCookingInstructions());
 
+        recipeViewModel.setVideoURL(recipe.getRecipeLink());
+        recipeViewModel.setRecipeName(recipe.getName());
     }
 
 
