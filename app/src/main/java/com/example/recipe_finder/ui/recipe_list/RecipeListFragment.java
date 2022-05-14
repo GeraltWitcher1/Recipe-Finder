@@ -57,7 +57,7 @@ public class RecipeListFragment extends Fragment implements RecipeListAdapter.Re
         noRecipesFoundLabel = view.findViewById(R.id.no_recipes_found);
 
         recipes.clear();
-        recipeListViewModel = new ViewModelProvider(this).get(RecipeListViewModel.class);
+        recipeListViewModel = new ViewModelProvider(requireActivity()).get(RecipeListViewModel.class);
         recipeListViewModel.getRecipes().observe(getViewLifecycleOwner(), this::addRecipes);
 
         recipeViewModel = new ViewModelProvider(this).get(RecipeViewModel.class);

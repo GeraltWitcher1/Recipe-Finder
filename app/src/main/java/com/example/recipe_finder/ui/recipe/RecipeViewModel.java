@@ -1,5 +1,8 @@
 package com.example.recipe_finder.ui.recipe;
 
+import android.app.Application;
+
+import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.ViewModel;
 
@@ -7,7 +10,7 @@ import com.example.recipe_finder.model.Recipe;
 import com.example.recipe_finder.repository.RecipeRepository;
 import com.example.recipe_finder.repository.RecipeRepositoryImpl;
 
-public class RecipeViewModel extends ViewModel {
+public class RecipeViewModel extends AndroidViewModel {
 
     RecipeRepository recipeRepository;
 
@@ -15,8 +18,9 @@ public class RecipeViewModel extends ViewModel {
     String recipeName;
 
 
-    public RecipeViewModel() {
-        this.recipeRepository = RecipeRepositoryImpl.getInstance();
+    public RecipeViewModel(Application app) {
+        super(app);
+        this.recipeRepository = RecipeRepositoryImpl.getInstance(app);
         this.videoURL = "No video link :(";
     }
 

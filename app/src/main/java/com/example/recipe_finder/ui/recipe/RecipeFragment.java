@@ -69,7 +69,7 @@ public class RecipeFragment extends Fragment {
         videoButton = view.findViewById(R.id.video_button);
         videoButton.setOnClickListener(this::videoButtonPressed);
 
-        recipeViewModel = new ViewModelProvider(this).get(RecipeViewModel.class);
+        recipeViewModel = new ViewModelProvider(requireActivity()).get(RecipeViewModel.class);
         recipeViewModel.getRecipe().observe(getViewLifecycleOwner(), this::addRecipe);
 
         if (getArguments() != null && getArguments().get("RecipeId") != null) {

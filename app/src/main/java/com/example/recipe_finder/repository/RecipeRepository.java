@@ -22,4 +22,9 @@ public interface RecipeRepository {
     void updateRecipeById(String id);
 
     void updateRecipeRandom();
+
+    void updateListFavourites();
+
+    boolean toggleFavourite(int recipeId);
+
 }

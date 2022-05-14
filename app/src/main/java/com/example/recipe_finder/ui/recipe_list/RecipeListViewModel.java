@@ -1,5 +1,8 @@
 package com.example.recipe_finder.ui.recipe_list;
 
+import android.app.Application;
+
+import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.ViewModel;
 
@@ -9,12 +12,13 @@ import com.example.recipe_finder.repository.RecipeRepositoryImpl;
 
 import java.util.ArrayList;
 
-public class RecipeListViewModel extends ViewModel {
+public class RecipeListViewModel extends AndroidViewModel {
 
     RecipeRepository recipeRepository;
 
-    public RecipeListViewModel() {
-        this.recipeRepository = RecipeRepositoryImpl.getInstance();
+    public RecipeListViewModel(Application app) {
+        super(app);
+        this.recipeRepository = RecipeRepositoryImpl.getInstance(app);
     }
 
     public LiveData<ArrayList<RecipeListItem>> getRecipes() {

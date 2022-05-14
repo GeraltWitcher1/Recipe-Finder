@@ -1,10 +1,13 @@
 package com.example.recipe_finder.repository;
 
+import android.app.Application;
 import android.util.Log;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
+import com.example.recipe_finder.database.RecipeDAO;
+import com.example.recipe_finder.database.RecipeDatabase;
 import com.example.recipe_finder.model.Recipe;
 import com.example.recipe_finder.model.RecipeListItem;
 import com.example.recipe_finder.networking.api.FoodAPI;
@@ -15,6 +18,8 @@ import com.google.gson.JsonObject;
 
 import java.util.ArrayList;
 import java.util.Objects;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -29,15 +34,25 @@ public class RecipeRepositoryImpl implements RecipeRepository {
 
     private final MutableLiveData<Recipe> recipe;
 
+    private FoodAPI foodAPI;
 
-    private RecipeRepositoryImpl() {
+    private RecipeDAO recipeDAO;
+
+    private final ExecutorService executorService;
+
+
+    private RecipeRepositoryImpl(Application application) {
+        RecipeDatabase database = RecipeDatabase.getInstance(application);
         recipes = new MutableLiveData<>();
         recipe = new MutableLiveData<>();
+        foodAPI = ServiceGenerator.getFoodAPI();
+        recipeDAO = database.recipeDAO();
+        executorService = Executors.newFixedThreadPool(2);
     }
 
-    public static synchronized RecipeRepository getInstance() {
+    public static synchronized RecipeRepository getInstance(Application application) {
         if (instance == null)
-            instance = new RecipeRepositoryImpl();
+            instance = new RecipeRepositoryImpl(application);
         return instance;
     }
 
@@ -45,17 +60,27 @@ public class RecipeRepositoryImpl implements RecipeRepository {
         return this.recipes;
     }
 
-    public LiveData<Recipe> getRecipe(){
+    public LiveData<Recipe> getRecipe() {
         return this.recipe;
     }
 
-    public void updateRecipeById(String id){
+    public void updateRecipeById(String id) {
         findRecipeById(id);
     }
 
     @Override
     public void updateRecipeRandom() {
         findRandomRecipe();
+    }
+
+    @Override
+    public void updateListFavourites() {
+
+    }
+
+    @Override
+    public boolean toggleFavourite(int recipeId) {
+        return false;
     }
 
 
@@ -75,8 +100,7 @@ public class RecipeRepositoryImpl implements RecipeRepository {
     }
 
 
-    private void findRandomRecipe(){
-        FoodAPI foodAPI = ServiceGenerator.getFoodAPI();
+    private void findRandomRecipe() {
         Call<JsonObject> call = foodAPI.getRandomRecipe();
 
         call.enqueue(new Callback<JsonObject>() {
@@ -96,8 +120,7 @@ public class RecipeRepositoryImpl implements RecipeRepository {
         });
     }
 
-    private void findRecipeById(String id){
-        FoodAPI foodAPI = ServiceGenerator.getFoodAPI();
+    private void findRecipeById(String id) {
         Call<JsonObject> call = foodAPI.getRecipeById(id);
 
         call.enqueue(new Callback<JsonObject>() {
@@ -119,7 +142,6 @@ public class RecipeRepositoryImpl implements RecipeRepository {
     }
 
     private void findRecipesBySearch(String recipeName) {
-        FoodAPI foodAPI = ServiceGenerator.getFoodAPI();
         Call<RecipeListResponse> call = foodAPI.getRecipeListItems(recipeName);
 
         call.enqueue(new Callback<RecipeListResponse>() {
@@ -140,7 +162,6 @@ public class RecipeRepositoryImpl implements RecipeRepository {
     }
 
     private void findRecipesByCategory(String categoryName) {
-        FoodAPI foodAPI = ServiceGenerator.getFoodAPI();
         Call<RecipeListResponse> call = foodAPI.getRecipesByCategory(categoryName);
 
         call.enqueue(new Callback<RecipeListResponse>() {
@@ -161,7 +182,6 @@ public class RecipeRepositoryImpl implements RecipeRepository {
     }
 
     private void findRecipeByCuisine(String cuisineName) {
-        FoodAPI foodAPI = ServiceGenerator.getFoodAPI();
         Call<RecipeListResponse> call = foodAPI.getRecipesByCuisine(cuisineName);
 
         call.enqueue(new Callback<RecipeListResponse>() {
