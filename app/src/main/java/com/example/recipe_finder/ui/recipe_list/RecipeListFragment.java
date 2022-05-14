@@ -40,7 +40,6 @@ public class RecipeListFragment extends Fragment implements RecipeListAdapter.Re
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-
         return inflater.inflate(R.layout.fragment_recipe_list, container, false);
     }
 
@@ -76,11 +75,8 @@ public class RecipeListFragment extends Fragment implements RecipeListAdapter.Re
             recipes.addAll(recipeListItems);
             adapter.setRecipes(recipes);
         } else {
-            System.out.println("Empty!");
             noRecipesFoundLabel.setVisibility(View.VISIBLE);
-
         }
-
     }
 
 
