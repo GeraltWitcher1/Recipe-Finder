@@ -43,7 +43,6 @@ public class RecipeFragment extends Fragment {
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-
         return inflater.inflate(R.layout.fragment_recipe, container, false);
     }
 
@@ -77,11 +76,12 @@ public class RecipeFragment extends Fragment {
     }
 
     private void shareButtonPressed(View view) {
-        Toast.makeText(getContext(), "share button pressed", Toast.LENGTH_SHORT).show();
         Intent shareIntent = new Intent(android.content.Intent.ACTION_SEND);
         shareIntent.setType("text/html");
         shareIntent.putExtra(android.content.Intent.EXTRA_SUBJECT, "Check out this awesome recipe!");
-        shareIntent.putExtra(android.content.Intent.EXTRA_TEXT, recipeViewModel.getRecipe().getName());
+        shareIntent.putExtra(android.content.Intent.EXTRA_TEXT,
+                recipeViewModel.getRecipe().getName()
+                        + "\n Recipe link: " + recipeViewModel.getRecipe().getRecipeLink());
         startActivity(Intent.createChooser(shareIntent, "Share Recipe"));
 
     }
@@ -94,7 +94,7 @@ public class RecipeFragment extends Fragment {
     private void videoButtonPressed(View view) {
         String action = Intent.ACTION_VIEW;
         Uri uri = Uri.parse(recipeViewModel.getRecipe().getRecipeLink());
-        Intent intent = new Intent(action,uri);
+        Intent intent = new Intent(action, uri);
         startActivity(intent);
     }
 

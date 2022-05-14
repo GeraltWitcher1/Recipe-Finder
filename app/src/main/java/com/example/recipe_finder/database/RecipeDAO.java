@@ -28,7 +28,7 @@ public interface RecipeDAO {
     List<Recipe> getAllFavourites();
 
     @Query("SELECT * FROM Recipe WHERE id == :recipeId")
-    LiveData<Recipe> getRecipeById(int recipeId);
+    Recipe getRecipeById(int recipeId);
 
     @Query("SELECT EXISTS (SELECT 1 FROM Recipe WHERE id == :recipeId)")
     boolean exists (int recipeId);

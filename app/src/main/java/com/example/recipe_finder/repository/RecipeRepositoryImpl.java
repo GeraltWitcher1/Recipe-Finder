@@ -22,7 +22,6 @@ import java.util.ArrayList;
 import java.util.Objects;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-import java.util.concurrent.atomic.AtomicBoolean;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -70,7 +69,13 @@ public class RecipeRepositoryImpl implements RecipeRepository {
     }
 
     public void updateRecipeById(String id) {
-        findRecipeById(id);
+        findRecipeByIdFromDb(id);
+        findRecipeByIdFromAPI(id);
+    }
+
+    private void findRecipeByIdFromDb(String recipeId) {
+        int id = Integer.parseInt(recipeId);
+        executorService.execute(() -> recipe.postValue(recipeDAO.getRecipeById(id)));
     }
 
     @Override
@@ -88,11 +93,9 @@ public class RecipeRepositoryImpl implements RecipeRepository {
 
         executorService.execute(() -> {
             if (recipeDAO.exists(recipe.getId())) {
-                System.out.println("Removing from favourite");
                 recipeDAO.delete(recipe);
             } else {
                 recipeDAO.insert(recipe);
-                System.out.println("adding to favorite");
             }
         });
 
@@ -133,7 +136,7 @@ public class RecipeRepositoryImpl implements RecipeRepository {
         });
     }
 
-    private void findRecipeById(String id) {
+    private void findRecipeByIdFromAPI(String id) {
         Call<JsonObject> call = foodAPI.getRecipeById(id);
 
         call.enqueue(new Callback<JsonObject>() {
@@ -217,17 +220,13 @@ public class RecipeRepositoryImpl implements RecipeRepository {
     private void findFavouriteRecipes() {
         ArrayList<RecipeListItem> favouriteRecipes = new ArrayList<>();
 
-        executorService.execute(()->{
+        executorService.execute(() -> {
             for (Recipe recipe : recipeDAO.getAllFavourites()) {
                 favouriteRecipes.add(new RecipeListItem(recipe.getId(), recipe.getName(), recipe.getImage()));
             }
             recipes.postValue(favouriteRecipes);
         });
 
-    }
-
-    private boolean isInternetAvailable() {
-        return connectivityManager.getActiveNetworkInfo().isConnected();
     }
 
 }
