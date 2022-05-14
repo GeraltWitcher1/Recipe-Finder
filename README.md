@@ -7,11 +7,11 @@ My app will provide an easy way to look up recipes without getting bombarded wit
 
 | Nr. | Requirement | Done |
 |-----|-------------| -------------|
-| 2.  | As a user I want to filter recipes by cuisines to more easily discover foods I might like . | 
-| 3.  | As a user I want to search recipes by ingredients to find recipes I can make with the food items I have at home. |
-| 4.  | As a user I want to save my favorite recipes so that I can easily find them later |
-| 5.  | As a user I want to share recipes to my friends to spread their popularity. |
+| 2.  | As a user I want to filter recipes by cuisines to more easily discover foods I might like . | :white_check_mark:
+| 3.  | As a user I want to search recipes by ingredients to find recipes I can make with the food items I have at home. | :white_check_mark:
+| 4.  | As a user I want to save my favorite recipes so that I can easily find them later | :white_check_mark:
+| 5.  | As a user I want to share recipes to my friends to spread their popularity. | :white_check_mark:
 | 6.  | As a user I want be able to view recipes' ratings and rate them myself so that best recipes stay on top of the list. |
 | 7.  | As a user I want to add my own recipes to the system so that others get to try making foods I love . |
-| 8. | As a user I want to view a random recipe to discover foods I might not think about otherwise. |
+| 8. | As a user I want to view a random recipe to discover foods I might not think about otherwise. | :white_check_mark:
 | 9. | As a user I want to be able to choose between different theme settings, so I can adjust the app's visuals to my liking. |
