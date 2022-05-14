@@ -1,9 +1,13 @@
 package com.example.recipe_finder.model;
 
 import androidx.annotation.NonNull;
+import androidx.room.Entity;
+import androidx.room.PrimaryKey;
 
+@Entity
 public class RecipeListItem {
 
+    @PrimaryKey
     private int idMeal;
     private String strMeal;
     private String strMealThumb;

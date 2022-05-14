@@ -1,10 +1,15 @@
 package com.example.recipe_finder.repository;
 
+import android.app.Application;
+import android.content.Context;
+import android.net.ConnectivityManager;
 import android.util.Log;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
+import com.example.recipe_finder.database.RecipeDAO;
+import com.example.recipe_finder.database.RecipeDatabase;
 import com.example.recipe_finder.model.Recipe;
 import com.example.recipe_finder.model.RecipeListItem;
 import com.example.recipe_finder.networking.api.FoodAPI;
@@ -15,6 +20,9 @@ import com.google.gson.JsonObject;
 
 import java.util.ArrayList;
 import java.util.Objects;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -29,15 +37,27 @@ public class RecipeRepositoryImpl implements RecipeRepository {
 
     private final MutableLiveData<Recipe> recipe;
 
+    private FoodAPI foodAPI;
 
-    private RecipeRepositoryImpl() {
+    private RecipeDAO recipeDAO;
+
+    private final ExecutorService executorService;
+
+    private ConnectivityManager connectivityManager;
+
+    private RecipeRepositoryImpl(Application application) {
+        RecipeDatabase database = RecipeDatabase.getInstance(application);
         recipes = new MutableLiveData<>();
         recipe = new MutableLiveData<>();
+        foodAPI = ServiceGenerator.getFoodAPI();
+        recipeDAO = database.recipeDAO();
+        executorService = Executors.newFixedThreadPool(2);
+        connectivityManager = (ConnectivityManager) application.getSystemService(Context.CONNECTIVITY_SERVICE);
     }
 
-    public static synchronized RecipeRepository getInstance() {
+    public static synchronized RecipeRepository getInstance(Application application) {
         if (instance == null)
-            instance = new RecipeRepositoryImpl();
+            instance = new RecipeRepositoryImpl(application);
         return instance;
     }
 
@@ -45,11 +65,11 @@ public class RecipeRepositoryImpl implements RecipeRepository {
         return this.recipes;
     }
 
-    public LiveData<Recipe> getRecipe(){
+    public LiveData<Recipe> getRecipe() {
         return this.recipe;
     }
 
-    public void updateRecipeById(String id){
+    public void updateRecipeById(String id) {
         findRecipeById(id);
     }
 
@@ -58,6 +78,25 @@ public class RecipeRepositoryImpl implements RecipeRepository {
         findRandomRecipe();
     }
 
+    @Override
+    public void updateListFavourites() {
+        findFavouriteRecipes();
+    }
+
+    @Override
+    public void toggleFavourite(Recipe recipe) {
+
+        executorService.execute(() -> {
+            if (recipeDAO.exists(recipe.getId())) {
+                System.out.println("Removing from favourite");
+                recipeDAO.delete(recipe);
+            } else {
+                recipeDAO.insert(recipe);
+                System.out.println("adding to favorite");
+            }
+        });
+
+    }
 
     @Override
     public void updateListBySearch(String recipeName) {
@@ -71,12 +110,10 @@ public class RecipeRepositoryImpl implements RecipeRepository {
 
     @Override
     public void updateListByCuisine(String cuisineName) {
-        findRecipeByCuisine(cuisineName);
+        findRecipesByCuisine(cuisineName);
     }
 
-
-    private void findRandomRecipe(){
-        FoodAPI foodAPI = ServiceGenerator.getFoodAPI();
+    private void findRandomRecipe() {
         Call<JsonObject> call = foodAPI.getRandomRecipe();
 
         call.enqueue(new Callback<JsonObject>() {
@@ -96,8 +133,7 @@ public class RecipeRepositoryImpl implements RecipeRepository {
         });
     }
 
-    private void findRecipeById(String id){
-        FoodAPI foodAPI = ServiceGenerator.getFoodAPI();
+    private void findRecipeById(String id) {
         Call<JsonObject> call = foodAPI.getRecipeById(id);
 
         call.enqueue(new Callback<JsonObject>() {
@@ -119,7 +155,6 @@ public class RecipeRepositoryImpl implements RecipeRepository {
     }
 
     private void findRecipesBySearch(String recipeName) {
-        FoodAPI foodAPI = ServiceGenerator.getFoodAPI();
         Call<RecipeListResponse> call = foodAPI.getRecipeListItems(recipeName);
 
         call.enqueue(new Callback<RecipeListResponse>() {
@@ -140,7 +175,6 @@ public class RecipeRepositoryImpl implements RecipeRepository {
     }
 
     private void findRecipesByCategory(String categoryName) {
-        FoodAPI foodAPI = ServiceGenerator.getFoodAPI();
         Call<RecipeListResponse> call = foodAPI.getRecipesByCategory(categoryName);
 
         call.enqueue(new Callback<RecipeListResponse>() {
@@ -160,8 +194,7 @@ public class RecipeRepositoryImpl implements RecipeRepository {
         });
     }
 
-    private void findRecipeByCuisine(String cuisineName) {
-        FoodAPI foodAPI = ServiceGenerator.getFoodAPI();
+    private void findRecipesByCuisine(String cuisineName) {
         Call<RecipeListResponse> call = foodAPI.getRecipesByCuisine(cuisineName);
 
         call.enqueue(new Callback<RecipeListResponse>() {
@@ -179,6 +212,22 @@ public class RecipeRepositoryImpl implements RecipeRepository {
                 Log.i("Retrofit", "Something went wrong :(" + t);
             }
         });
+    }
+
+    private void findFavouriteRecipes() {
+        ArrayList<RecipeListItem> favouriteRecipes = new ArrayList<>();
+
+        executorService.execute(()->{
+            for (Recipe recipe : recipeDAO.getAllFavourites()) {
+                favouriteRecipes.add(new RecipeListItem(recipe.getId(), recipe.getName(), recipe.getImage()));
+            }
+            recipes.postValue(favouriteRecipes);
+        });
+
+    }
+
+    private boolean isInternetAvailable() {
+        return connectivityManager.getActiveNetworkInfo().isConnected();
     }
 
 }

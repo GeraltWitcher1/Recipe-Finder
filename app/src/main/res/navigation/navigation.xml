@@ -12,11 +12,11 @@
         android:label="Searched recipes"
         tools:layout="@layout/fragment_recipe_list"
         >
-        <action
-            android:id="@+id/action_nav_recipe_list_to_nav_recipe"
-            app:destination="@id/nav_recipe"
-            app:enterAnim="@anim/nav_default_enter_anim"
-            app:exitAnim="@anim/nav_default_exit_anim" />
+<!--        <action-->
+<!--            android:id="@+id/action_nav_recipe_list_to_nav_recipe"-->
+<!--            app:destination="@id/nav_recipe"-->
+<!--            app:enterAnim="@anim/nav_default_enter_anim"-->
+<!--            app:exitAnim="@anim/nav_default_exit_anim" />-->
     </fragment>
 
     <fragment
@@ -49,7 +49,12 @@
         android:name="com.example.recipe_finder.ui.recipe_list.RecipeListFragment"
         android:label="Favourite recipes"
         tools:layout="@layout/fragment_recipe_list"
-        />
+        >
+        <argument
+            android:name="NavigationSource"
+            app:argType="string"
+            android:defaultValue="FavouriteRecipes"/>
+    </fragment>
 
     <fragment
         android:id="@+id/nav_search"
