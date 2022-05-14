@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -40,8 +41,7 @@ public class RecipeListFragment extends Fragment implements RecipeListAdapter.Re
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
-        View root = inflater.inflate(R.layout.fragment_recipe_list, container, false);
-        return root;
+        return inflater.inflate(R.layout.fragment_recipe_list, container, false);
     }
 
     @Override
@@ -61,6 +61,10 @@ public class RecipeListFragment extends Fragment implements RecipeListAdapter.Re
         recipeListViewModel.getRecipes().observe(getViewLifecycleOwner(), this::addRecipes);
 
         recipeViewModel = new ViewModelProvider(this).get(RecipeViewModel.class);
+
+        if (getArguments() != null && getArguments().get("NavigationSource") != null) {
+            recipeListViewModel.updateRecipesFavourite();
+        }
 
     }
 
@@ -84,6 +88,6 @@ public class RecipeListFragment extends Fragment implements RecipeListAdapter.Re
     public void onClick(RecipeListItem recipe) {
         Bundle bundle = new Bundle();
         bundle.putInt("RecipeId", recipe.getIdMeal());
-        NavHostFragment.findNavController(this).navigate(R.id.action_nav_recipe_list_to_nav_recipe, bundle);
+        NavHostFragment.findNavController(this).navigate(R.id.nav_recipe, bundle);
     }
 }

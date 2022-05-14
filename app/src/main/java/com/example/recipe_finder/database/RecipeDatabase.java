@@ -8,6 +8,7 @@ import androidx.room.RoomDatabase;
 import androidx.room.TypeConverters;
 
 import com.example.recipe_finder.model.Recipe;
+import com.example.recipe_finder.model.RecipeListItem;
 
 @Database(entities = {Recipe.class}, version = 1, exportSchema = false)
 @TypeConverters({Converters.class})

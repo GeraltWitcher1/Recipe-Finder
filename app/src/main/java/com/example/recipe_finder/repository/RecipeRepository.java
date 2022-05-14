@@ -25,6 +25,6 @@ public interface RecipeRepository {
 
     void updateListFavourites();
 
-    boolean toggleFavourite(int recipeId);
+    void toggleFavourite(Recipe recipe);
 
 }

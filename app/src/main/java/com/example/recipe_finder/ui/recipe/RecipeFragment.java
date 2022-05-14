@@ -44,8 +44,7 @@ public class RecipeFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
-        View root = inflater.inflate(R.layout.fragment_recipe, container, false);
-        return root;
+        return inflater.inflate(R.layout.fragment_recipe, container, false);
     }
 
     @Override
@@ -70,7 +69,7 @@ public class RecipeFragment extends Fragment {
         videoButton.setOnClickListener(this::videoButtonPressed);
 
         recipeViewModel = new ViewModelProvider(requireActivity()).get(RecipeViewModel.class);
-        recipeViewModel.getRecipe().observe(getViewLifecycleOwner(), this::addRecipe);
+        recipeViewModel.observeRecipe().observe(getViewLifecycleOwner(), this::addRecipe);
 
         if (getArguments() != null && getArguments().get("RecipeId") != null) {
             recipeViewModel.updateRecipeById(getArguments().get("RecipeId") + "");
@@ -82,18 +81,19 @@ public class RecipeFragment extends Fragment {
         Intent shareIntent = new Intent(android.content.Intent.ACTION_SEND);
         shareIntent.setType("text/html");
         shareIntent.putExtra(android.content.Intent.EXTRA_SUBJECT, "Check out this awesome recipe!");
-        shareIntent.putExtra(android.content.Intent.EXTRA_TEXT, recipeViewModel.getRecipeName());
+        shareIntent.putExtra(android.content.Intent.EXTRA_TEXT, recipeViewModel.getRecipe().getName());
         startActivity(Intent.createChooser(shareIntent, "Share Recipe"));
 
     }
 
     private void favouriteButtonPressed(View view) {
-        Toast.makeText(getContext(), "favourite button pressed", Toast.LENGTH_SHORT).show();
+        recipeViewModel.toggleFavouriteButton();
+        Toast.makeText(getContext(), "Toggled favorite status!", Toast.LENGTH_SHORT).show();
     }
 
     private void videoButtonPressed(View view) {
         String action = Intent.ACTION_VIEW;
-        Uri uri = Uri.parse(recipeViewModel.getVideoURL());
+        Uri uri = Uri.parse(recipeViewModel.getRecipe().getRecipeLink());
         Intent intent = new Intent(action,uri);
         startActivity(intent);
     }
@@ -134,8 +134,7 @@ public class RecipeFragment extends Fragment {
 
         recipeCookingInstructions.setText(recipe.getCookingInstructions());
 
-        recipeViewModel.setVideoURL(recipe.getRecipeLink());
-        recipeViewModel.setRecipeName(recipe.getName());
+        recipeViewModel.setRecipe(recipe);
     }
 
 

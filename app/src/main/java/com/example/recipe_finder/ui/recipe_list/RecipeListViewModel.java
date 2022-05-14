@@ -37,4 +37,8 @@ public class RecipeListViewModel extends AndroidViewModel {
         recipeRepository.updateListByCuisine(cuisineName);
     }
 
+    public void updateRecipesFavourite(){
+        recipeRepository.updateListFavourites();
+    }
+
 }

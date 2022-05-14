@@ -14,6 +14,7 @@ import java.util.List;
 
 @Dao
 public interface RecipeDAO {
+
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     void insert(Recipe recipe);
 
@@ -24,8 +25,12 @@ public interface RecipeDAO {
     void delete(Recipe recipe);
 
     @Query("SELECT * FROM Recipe ORDER BY name")
-    LiveData<List<Recipe>> getAllFavourites();
+    List<Recipe> getAllFavourites();
 
     @Query("SELECT * FROM Recipe WHERE id == :recipeId")
     LiveData<Recipe> getRecipeById(int recipeId);
+
+    @Query("SELECT EXISTS (SELECT 1 FROM Recipe WHERE id == :recipeId)")
+    boolean exists (int recipeId);
+
 }
