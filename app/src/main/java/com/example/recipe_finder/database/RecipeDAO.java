@@ -10,7 +10,7 @@ import androidx.room.Update;
 
 import com.example.recipe_finder.model.Recipe;
 
-import java.util.ArrayList;
+import java.util.List;
 
 @Dao
 public interface RecipeDAO {
@@ -24,7 +24,7 @@ public interface RecipeDAO {
     void delete(Recipe recipe);
 
     @Query("SELECT * FROM Recipe ORDER BY name")
-    LiveData<ArrayList<Recipe>> getAllFavourites();
+    LiveData<List<Recipe>> getAllFavourites();
 
     @Query("SELECT * FROM Recipe WHERE id == :recipeId")
     LiveData<Recipe> getRecipeById(int recipeId);
