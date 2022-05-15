@@ -16,7 +16,6 @@ public class RecipeViewModel extends AndroidViewModel {
 
     Recipe recipe;
 
-
     public RecipeViewModel(Application app) {
         super(app);
         this.recipeRepository = RecipeRepositoryImpl.getInstance(app);
@@ -43,14 +42,10 @@ public class RecipeViewModel extends AndroidViewModel {
         recipeRepository.toggleFavourite(recipe);
     }
 
-
     public Recipe getRecipe(){
         return this.recipe;
     }
 
-    public void setRecipe(Recipe recipe) {
-        this.recipe = recipe;
-    }
 
     public boolean getFavouriteStatus(){
         return recipeRepository.isFavourite(this.recipe.getId());

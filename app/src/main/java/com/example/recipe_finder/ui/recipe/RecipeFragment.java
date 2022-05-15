@@ -96,7 +96,6 @@ public class RecipeFragment extends Fragment {
 
         recipeViewModel.toggleFavouriteButton();
 
-
         Toast.makeText(getContext(), textToShow, Toast.LENGTH_SHORT).show();
     }
 
@@ -104,7 +103,11 @@ public class RecipeFragment extends Fragment {
         String action = Intent.ACTION_VIEW;
         Uri uri = Uri.parse(recipeViewModel.getRecipe().getRecipeLink());
         Intent intent = new Intent(action, uri);
-        startActivity(intent);
+        try {
+            startActivity(intent);
+        } catch (Exception e) {
+            Toast.makeText(getContext(), "Could not load the recipe video :(", Toast.LENGTH_SHORT).show();
+        }
     }
 
 
@@ -144,7 +147,6 @@ public class RecipeFragment extends Fragment {
         }
 
         recipeCookingInstructions.setText(recipe.getCookingInstructions());
-        System.out.println(recipeViewModel.getFavouriteStatus());
         handleFavoriteButton(recipeViewModel.getFavouriteStatus());
 
     }
