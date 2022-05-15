@@ -15,6 +15,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
@@ -73,6 +74,7 @@ public class RecipeFragment extends Fragment {
         if (getArguments() != null && getArguments().get("RecipeId") != null) {
             recipeViewModel.updateRecipeById(getArguments().get("RecipeId") + "");
         } else recipeViewModel.updateRecipeRandom();
+
     }
 
     private void shareButtonPressed(View view) {
@@ -90,7 +92,10 @@ public class RecipeFragment extends Fragment {
 
         String textToShow = recipeViewModel.getFavouriteStatus() ? "Removed from favourites" : "Added to favourites";
 
+        handleFavoriteButton(!recipeViewModel.getFavouriteStatus());
+
         recipeViewModel.toggleFavouriteButton();
+
 
         Toast.makeText(getContext(), textToShow, Toast.LENGTH_SHORT).show();
     }
@@ -139,7 +144,15 @@ public class RecipeFragment extends Fragment {
         }
 
         recipeCookingInstructions.setText(recipe.getCookingInstructions());
+        System.out.println(recipeViewModel.getFavouriteStatus());
+        handleFavoriteButton(recipeViewModel.getFavouriteStatus());
 
+    }
+
+    void handleFavoriteButton(boolean isFavorite){
+        if(isFavorite){
+            favouriteButton.setBackground(ActivityCompat.getDrawable(requireContext(),R.drawable.favourite_selected_ripple));
+        } else favouriteButton.setBackground(ActivityCompat.getDrawable(requireContext(),R.drawable.favourite_unselected_ripple));
     }
 
 

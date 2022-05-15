@@ -98,29 +98,16 @@ public class RecipeRepositoryImpl implements RecipeRepository {
 
             if(!recipeDAO.exists(recipe.getId())){
                 recipe.setFavourite(true);
-                System.out.println("Set to true");
                 recipeDAO.insert(recipe);
             }
 
             else if(recipeDAO.exists(recipe.getId())){
                 recipe.setFavourite(false);
                 recipeDAO.update(recipe);
-                System.out.println("Set to false");
                 recipeDAO.delete(recipe);
             }
 
         });
-
-//        executorService.execute(() -> {
-//            if(!recipeDAO.exists(recipe.getId())){
-//                recipe.setFavourite(true);
-//                recipeDAO.insert(recipe);
-//            } else{
-//                recipe.setFavourite(false);
-//                System.out.println(recipe.isFavourite());
-//                recipeDAO.update(recipe);
-//            }
-//        });
 
     }
 
@@ -133,7 +120,6 @@ public class RecipeRepositoryImpl implements RecipeRepository {
         } catch (ExecutionException | InterruptedException e) {
             e.printStackTrace();
         }
-        System.out.println(isFavourite);
         return isFavourite;
     }
 
