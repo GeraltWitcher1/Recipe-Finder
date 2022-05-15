@@ -75,7 +75,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="24dp"
             android:layout_marginTop="8dp"
-            android:background="@drawable/favourite_ripple"
+            android:background="@drawable/toggle_favorite_image"
             android:contentDescription="@string/favourite"
             android:minWidth="48dp"
             android:minHeight="48dp"

@@ -20,6 +20,8 @@ public class Recipe {
     private ArrayList<String> ingredients;
     private ArrayList<String> measures;
 
+    private boolean isFavourite;
+
     public Recipe(int id, String name, String category, String area, String cookingInstructions, String image, String recipeLink, ArrayList<String> ingredients, ArrayList<String> measures)
     {
         this.id = id;
@@ -68,4 +70,13 @@ public class Recipe {
     public ArrayList<String> getMeasures() {
         return measures;
     }
+
+    public boolean isFavourite() {
+        return isFavourite;
+    }
+
+    public void setFavourite(boolean favourite) {
+        isFavourite = favourite;
+    }
+
 }

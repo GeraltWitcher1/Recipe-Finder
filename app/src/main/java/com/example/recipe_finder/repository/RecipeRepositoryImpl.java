@@ -20,8 +20,10 @@ import com.google.gson.JsonObject;
 
 import java.util.ArrayList;
 import java.util.Objects;
+import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -69,8 +71,8 @@ public class RecipeRepositoryImpl implements RecipeRepository {
     }
 
     public void updateRecipeById(String id) {
-        findRecipeByIdFromDb(id);
         findRecipeByIdFromAPI(id);
+        findRecipeByIdFromDb(id);
     }
 
     private void findRecipeByIdFromDb(String recipeId) {
@@ -91,14 +93,48 @@ public class RecipeRepositoryImpl implements RecipeRepository {
     @Override
     public void toggleFavourite(Recipe recipe) {
 
-        executorService.execute(() -> {
-            if (recipeDAO.exists(recipe.getId())) {
-                recipeDAO.delete(recipe);
-            } else {
+
+        executorService.execute(()->{
+
+            if(!recipeDAO.exists(recipe.getId())){
+                recipe.setFavourite(true);
+                System.out.println("Set to true");
                 recipeDAO.insert(recipe);
             }
+
+            else if(recipeDAO.exists(recipe.getId())){
+                recipe.setFavourite(false);
+                recipeDAO.update(recipe);
+                System.out.println("Set to false");
+                recipeDAO.delete(recipe);
+            }
+
         });
 
+//        executorService.execute(() -> {
+//            if(!recipeDAO.exists(recipe.getId())){
+//                recipe.setFavourite(true);
+//                recipeDAO.insert(recipe);
+//            } else{
+//                recipe.setFavourite(false);
+//                System.out.println(recipe.isFavourite());
+//                recipeDAO.update(recipe);
+//            }
+//        });
+
+    }
+
+    @Override
+    public boolean isFavourite(int recipeId) {
+        final Future<Boolean> isFavouriteAsync = executorService.submit(()->recipeDAO.isFavourite(recipeId));
+        boolean isFavourite = false;
+        try {
+            isFavourite = isFavouriteAsync.get();
+        } catch (ExecutionException | InterruptedException e) {
+            e.printStackTrace();
+        }
+        System.out.println(isFavourite);
+        return isFavourite;
     }
 
     @Override

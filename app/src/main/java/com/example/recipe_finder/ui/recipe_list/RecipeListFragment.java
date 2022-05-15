@@ -70,12 +70,12 @@ public class RecipeListFragment extends Fragment implements RecipeListAdapter.Re
     @SuppressLint("SetTextI18n")
     private void addRecipes(ArrayList<RecipeListItem> recipeListItems) {
         recipes.clear();
-        if (recipeListItems != null) {
+        if (recipeListItems == null || recipeListItems.size()==0) {
+            noRecipesFoundLabel.setVisibility(View.VISIBLE);
+        } else {
             noRecipesFoundLabel.setVisibility(View.GONE);
             recipes.addAll(recipeListItems);
             adapter.setRecipes(recipes);
-        } else {
-            noRecipesFoundLabel.setVisibility(View.VISIBLE);
         }
     }
 

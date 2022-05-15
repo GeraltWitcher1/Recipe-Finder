@@ -20,6 +20,11 @@ public class RecipeViewModel extends AndroidViewModel {
     public RecipeViewModel(Application app) {
         super(app);
         this.recipeRepository = RecipeRepositoryImpl.getInstance(app);
+        observeRecipe().observeForever(this::updateRecipe);
+    }
+
+    private void updateRecipe(Recipe recipe) {
+        this.recipe = recipe;
     }
 
     public LiveData<Recipe> observeRecipe() {
@@ -45,5 +50,9 @@ public class RecipeViewModel extends AndroidViewModel {
 
     public void setRecipe(Recipe recipe) {
         this.recipe = recipe;
+    }
+
+    public boolean getFavouriteStatus(){
+        return recipeRepository.isFavourite(this.recipe.getId());
     }
 }

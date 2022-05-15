@@ -24,7 +24,7 @@ public interface RecipeDAO {
     @Delete
     void delete(Recipe recipe);
 
-    @Query("SELECT * FROM Recipe ORDER BY name")
+    @Query("SELECT * FROM Recipe WHERE isFavourite ORDER BY name")
     List<Recipe> getAllFavourites();
 
     @Query("SELECT * FROM Recipe WHERE id == :recipeId")
@@ -32,5 +32,8 @@ public interface RecipeDAO {
 
     @Query("SELECT EXISTS (SELECT 1 FROM Recipe WHERE id == :recipeId)")
     boolean exists (int recipeId);
+
+    @Query("SELECT EXISTS (SELECT 1 FROM Recipe WHERE id == :recipeId AND isFavourite)")
+    boolean isFavourite (int recipeId);
 
 }

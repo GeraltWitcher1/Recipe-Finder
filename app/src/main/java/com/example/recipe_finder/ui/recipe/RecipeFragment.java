@@ -87,8 +87,12 @@ public class RecipeFragment extends Fragment {
     }
 
     private void favouriteButtonPressed(View view) {
+
+        String textToShow = recipeViewModel.getFavouriteStatus() ? "Removed from favourites" : "Added to favourites";
+
         recipeViewModel.toggleFavouriteButton();
-        Toast.makeText(getContext(), "Toggled favorite status!", Toast.LENGTH_SHORT).show();
+
+        Toast.makeText(getContext(), textToShow, Toast.LENGTH_SHORT).show();
     }
 
     private void videoButtonPressed(View view) {
@@ -100,6 +104,8 @@ public class RecipeFragment extends Fragment {
 
 
     private void addRecipe(Recipe recipe) {
+
+        if(recipe==null) return;
 
         recipeTitle.setText(recipe.getName());
 
@@ -134,7 +140,6 @@ public class RecipeFragment extends Fragment {
 
         recipeCookingInstructions.setText(recipe.getCookingInstructions());
 
-        recipeViewModel.setRecipe(recipe);
     }
 
 
