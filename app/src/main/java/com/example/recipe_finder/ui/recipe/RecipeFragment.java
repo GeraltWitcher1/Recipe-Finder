@@ -84,8 +84,11 @@ public class RecipeFragment extends Fragment {
         shareIntent.putExtra(android.content.Intent.EXTRA_TEXT,
                 recipeViewModel.getRecipe().getName()
                         + "\n Recipe link: " + recipeViewModel.getRecipe().getRecipeLink());
+        try{
         startActivity(Intent.createChooser(shareIntent, "Share Recipe"));
-
+        } catch (Exception e){
+            Toast.makeText(getContext(), "Could not share the recipe :(", Toast.LENGTH_SHORT).show();
+        }
     }
 
     private void favouriteButtonPressed(View view) {

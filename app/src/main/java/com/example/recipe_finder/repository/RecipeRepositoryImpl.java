@@ -44,8 +44,6 @@ public class RecipeRepositoryImpl implements RecipeRepository {
 
     private final ExecutorService executorService;
 
-    private ConnectivityManager connectivityManager;
-
     private RecipeRepositoryImpl(Application application) {
         RecipeDatabase database = RecipeDatabase.getInstance(application);
         recipes = new MutableLiveData<>();
@@ -53,7 +51,6 @@ public class RecipeRepositoryImpl implements RecipeRepository {
         foodAPI = ServiceGenerator.getFoodAPI();
         recipeDAO = database.recipeDAO();
         executorService = Executors.newFixedThreadPool(2);
-        connectivityManager = (ConnectivityManager) application.getSystemService(Context.CONNECTIVITY_SERVICE);
     }
 
     public static synchronized RecipeRepository getInstance(Application application) {
@@ -71,8 +68,8 @@ public class RecipeRepositoryImpl implements RecipeRepository {
     }
 
     public void updateRecipeById(String id) {
-        findRecipeByIdFromAPI(id);
         findRecipeByIdFromDb(id);
+        findRecipeByIdFromAPI(id);
     }
 
     private void findRecipeByIdFromDb(String recipeId) {
