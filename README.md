@@ -7,6 +7,7 @@ My app will provide an easy way to look up recipes without getting bombarded wit
 
 | Nr. | Requirement | Done |
 |-----|-------------| -------------|
+| 1.  | As a user I want to be able to search for recipes for me to discover new things to cook.  | :white_check_mark:
 | 2.  | As a user I want to filter recipes by cuisines to more easily discover foods I might like . | :white_check_mark:
 | 3.  | As a user I want to search recipes by ingredients to find recipes I can make with the food items I have at home. | :white_check_mark:
 | 4.  | As a user I want to save my favorite recipes so that I can easily find them later | :white_check_mark:
