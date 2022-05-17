@@ -4,6 +4,7 @@ Unfortunately, more often than not that experience is soured by countless advert
 
 My app will provide an easy way to look up recipes without getting bombarded with unnecessary information and make homecooks' life a little bit easier.
 
+Demonstration link: https://youtu.be/RFOAkfrJ8z8
 
 | Nr. | Requirement | Done |
 |-----|-------------| -------------|
